@@ -1,0 +1,68 @@
+[
+  {
+    "Id": 1,
+    "title": "Review project proposal",
+    "description": "Go through the Q4 marketing proposal and provide feedback on budget allocation and timeline",
+    "categoryId": "1",
+    "priority": "high",
+    "dueDate": "2024-12-15",
+    "completed": false,
+    "createdAt": "2024-12-14T08:00:00Z",
+    "completedAt": null
+  },
+  {
+    "Id": 2,
+    "title": "Team standup meeting",
+    "description": "Daily sync with the development team to discuss progress and blockers",
+    "categoryId": "2",
+    "priority": "medium",
+    "dueDate": "2024-12-14",
+    "completed": true,
+    "createdAt": "2024-12-14T07:30:00Z",
+    "completedAt": "2024-12-14T09:15:00Z"
+  },
+  {
+    "Id": 3,
+    "title": "Update documentation",
+    "description": "Revise API documentation to reflect recent changes in endpoints",
+    "categoryId": "3",
+    "priority": "low",
+    "dueDate": "2024-12-20",
+    "completed": false,
+    "createdAt": "2024-12-13T14:00:00Z",
+    "completedAt": null
+  },
+  {
+    "Id": 4,
+    "title": "Client call with Acme Corp",
+    "description": "Discuss the new feature requirements and timeline for the upcoming release",
+    "categoryId": "2",
+    "priority": "high",
+    "dueDate": "2024-12-14",
+    "completed": false,
+    "createdAt": "2024-12-14T06:00:00Z",
+    "completedAt": null
+  },
+  {
+    "Id": 5,
+    "title": "Grocery shopping",
+    "description": "Buy ingredients for weekend dinner party - don't forget wine!",
+    "categoryId": "4",
+    "priority": "medium",
+    "dueDate": "2024-12-15",
+    "completed": false,
+    "createdAt": "2024-12-14T10:00:00Z",
+    "completedAt": null
+  },
+  {
+    "Id": 6,
+    "title": "Code review for authentication module",
+    "description": "Review pull request #247 for the new OAuth implementation",
+    "categoryId": "3",
+    "priority": "high",
+    "dueDate": "2024-12-14",
+    "completed": true,
+    "createdAt": "2024-12-13T16:00:00Z",
+    "completedAt": "2024-12-14T11:30:00Z"
+  }
+]
