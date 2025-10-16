@@ -34,15 +34,18 @@ const TaskManager = () => {
     refetch: refetchCategories
   } = useCategories();
 
-  const filteredTasks = useMemo(() => {
+const filteredTasks = useMemo(() => {
     if (activeCategory === "all") return tasks;
-    if (activeCategory === "active") return tasks.filter(task => !task.completed);
-    if (activeCategory === "completed") return tasks.filter(task => task.completed);
-    return tasks.filter(task => task.categoryId === activeCategory);
+    if (activeCategory === "active") return tasks.filter(task => !task.completed_c);
+    if (activeCategory === "completed") return tasks.filter(task => task.completed_c);
+    return tasks.filter(task => {
+      const categoryId = task.category_id_c?.Id || task.category_id_c;
+      return categoryId === parseInt(activeCategory);
+    });
   }, [tasks, activeCategory]);
 
-  const totalTasks = tasks.length;
-  const completedTasks = tasks.filter(task => task.completed).length;
+const totalTasks = tasks.length;
+  const completedTasks = tasks.filter(task => task.completed_c).length;
 
   const handleAddTask = async (taskData) => {
     try {

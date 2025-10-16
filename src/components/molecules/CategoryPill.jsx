@@ -23,7 +23,7 @@ const CategoryPill = ({ category, isActive, onClick, showCount = false }) => {
           className="w-3 h-3 rounded-full"
           style={{ backgroundColor: category.color }}
         />
-        <span>{category.name}</span>
+<span>{category.name_c}</span>
       </div>
       {showCount && (
         <span className={cn(
@@ -32,7 +32,7 @@ const CategoryPill = ({ category, isActive, onClick, showCount = false }) => {
             ? "bg-white/20 text-white" 
             : "bg-gray-100 text-gray-600"
         )}>
-          {category.taskCount || 0}
+{category.task_count_c || 0}
         </span>
       )}
     </button>

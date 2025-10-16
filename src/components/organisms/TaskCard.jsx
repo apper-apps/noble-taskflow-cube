@@ -1,11 +1,11 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { cn } from "@/utils/cn";
-import { format, isToday, isTomorrow, isPast } from "date-fns";
+import { format, isPast, isToday, isTomorrow } from "date-fns";
 import { toast } from "react-toastify";
+import { cn } from "@/utils/cn";
+import ApperIcon from "@/components/ApperIcon";
 import Checkbox from "@/components/atoms/Checkbox";
 import PriorityBadge from "@/components/molecules/PriorityBadge";
-import ApperIcon from "@/components/ApperIcon";
 
 const TaskCard = ({ task, category, onToggleComplete, onEdit, onDelete }) => {
   const handleToggleComplete = () => {
@@ -18,32 +18,35 @@ const TaskCard = ({ task, category, onToggleComplete, onEdit, onDelete }) => {
     }
   };
 
-  const formatDueDate = (dateStr) => {
-    if (!dateStr) return null;
+const isDueSoon = () => {
+    if (!task.due_date_c) return false;
+    const dueDate = new Date(task.due_date_c);
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
     
-    const date = new Date(dateStr);
-    if (isToday(date)) return "Today";
-    if (isTomorrow(date)) return "Tomorrow";
-    return format(date, "MMM d");
-  };
-
-  const isDueSoon = () => {
-    if (!task.dueDate) return false;
-    const date = new Date(task.dueDate);
-    return (isToday(date) || isTomorrow(date)) && !task.completed;
+    return dueDate <= tomorrow && dueDate >= today;
   };
 
   const isOverdue = () => {
-    if (!task.dueDate) return false;
-    const date = new Date(task.dueDate);
-    return isPast(date) && !isToday(date) && !task.completed;
+    if (!task.due_date_c) return false;
+    const dueDate = new Date(task.due_date_c);
+    const today = new Date();
+    return dueDate < today && !task.completed_c;
   };
 
-  const dueDateDisplay = formatDueDate(task.dueDate);
+  const formatDueDate = (dateString) => {
+    if (!dateString) return null;
+    const date = new Date(dateString);
+    if (isToday(date)) return "Today";
+    if (isTomorrow(date)) return "Tomorrow";
+    return format(date, "MMM d, yyyy");
+  };
+
+  const dueDateDisplay = formatDueDate(task.due_date_c);
 
   return (
     <motion.div
-      layout
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20, transition: { duration: 0.2 } }}
@@ -53,36 +56,37 @@ const TaskCard = ({ task, category, onToggleComplete, onEdit, onDelete }) => {
         task.completed && "opacity-75 bg-gray-50"
       )}
     >
-      <div className="flex items-start gap-3">
+<div className="flex items-start gap-3">
         <div className="mt-1">
           <Checkbox 
-            checked={task.completed}
+            checked={task.completed_c}
             onChange={handleToggleComplete}
+            aria-label="Mark as complete"
           />
         </div>
-        
+
         <div className="flex-1 min-w-0">
-          <div className="flex items-start justify-between gap-2">
-            <div className="flex-1 min-w-0">
-              <h3 className={cn(
-                "font-medium text-gray-900 transition-all duration-200",
-                task.completed && "line-through text-gray-500"
+          <div className="flex items-start justify-between gap-2 mb-2">
+            <h3 
+              className={cn(
+                "text-base font-semibold text-gray-900 transition-all duration-200 leading-tight",
+                task.completed_c && "line-through text-gray-500"
               )}>
-                {task.title}
-              </h3>
-              
-              {task.description && (
-                <p className={cn(
-                  "text-sm text-gray-600 mt-1 line-clamp-2",
-                  task.completed && "text-gray-400"
-                )}>
-                  {task.description}
-                </p>
-              )}
-            </div>
-            
-            <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-              <button
+              {task.title_c}
+            </h3>
+</div>
+          
+          {task.description_c && (
+            <p className={cn(
+              "text-sm text-gray-600 mt-1 line-clamp-2",
+              task.completed_c && "text-gray-400"
+            )}>
+              {task.description_c}
+            </p>
+          )}
+          
+          <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+            <button
                 onClick={(e) => {
                   e.stopPropagation();
                   onEdit(task);
@@ -99,37 +103,38 @@ const TaskCard = ({ task, category, onToggleComplete, onEdit, onDelete }) => {
                 className="p-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors duration-200"
               >
                 <ApperIcon name="Trash2" size={14} />
-              </button>
-            </div>
+</button>
           </div>
-          
-          <div className="flex items-center justify-between mt-3">
-            <div className="flex items-center gap-3">
-              <PriorityBadge 
-                priority={task.priority} 
-                showPulse={!task.completed}
+        </div>
+      </div>
+      
+      <div className="flex items-center justify-between mt-3">
+        <div className="flex items-center gap-3">
+          <PriorityBadge
+priority={task.priority_c} 
+                showPulse={!task.completed_c}
               />
               
               {category && (
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-gray-100">
                   <div 
                     className="w-2 h-2 rounded-full"
-                    style={{ backgroundColor: category.color }}
+                    style={{ backgroundColor: category.color_c }}
                   />
-                  <span className="text-xs text-gray-500 font-medium">
-                    {category.name}
+                  <span className="text-xs text-gray-700">
+                    {category.name_c}
                   </span>
                 </div>
-              )}
-            </div>
-            
-            {dueDateDisplay && (
-              <div className={cn(
-                "flex items-center gap-1 text-xs font-medium",
-                isOverdue() && "text-red-600",
+)}
+          </div>
+          
+          {dueDateDisplay && (
+            <div className={cn(
+              "flex items-center gap-1 text-xs font-medium",
+              isOverdue() && "text-red-600",
                 isDueSoon() && !isOverdue() && "text-amber-600",
-                task.completed && "text-gray-400",
-                !isDueSoon() && !isOverdue() && !task.completed && "text-gray-500"
+                task.completed_c && "text-gray-400",
+                !isDueSoon() && !isOverdue() && !task.completed_c && "text-gray-500"
               )}>
                 <ApperIcon 
                   name="Calendar" 
@@ -139,10 +144,9 @@ const TaskCard = ({ task, category, onToggleComplete, onEdit, onDelete }) => {
                     isDueSoon() && !isOverdue() && "text-amber-500"
                   )}
                 />
-                <span>{dueDateDisplay}</span>
-              </div>
-            )}
-          </div>
+<span>{dueDateDisplay}</span>
+            </div>
+          )}
         </div>
       </div>
     </motion.div>

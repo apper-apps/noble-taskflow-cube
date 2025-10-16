@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
-import Button from "@/components/atoms/Button";
-import FormField from "@/components/molecules/FormField";
-import Select from "@/components/atoms/Select";
 import ApperIcon from "@/components/ApperIcon";
+import Button from "@/components/atoms/Button";
+import Select from "@/components/atoms/Select";
+import FormField from "@/components/molecules/FormField";
 
 const QuickAddForm = ({ categories, onAddTask, isExpanded, onToggleExpanded }) => {
   const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    categoryId: "",
-    priority: "medium",
-    dueDate: ""
+    title_c: "",
+    description_c: "",
+    category_id_c: "",
+    priority_c: "medium",
+    due_date_c: ""
   });
 
   const handleSubmit = (e) => {
@@ -23,20 +23,21 @@ const QuickAddForm = ({ categories, onAddTask, isExpanded, onToggleExpanded }) =
       return;
     }
 
-    const newTask = {
-      ...formData,
-      title: formData.title.trim(),
-      description: formData.description.trim(),
-      dueDate: formData.dueDate || null
+const newTask = {
+      title_c: formData.title_c.trim(),
+      description_c: formData.description_c.trim(),
+      priority_c: formData.priority_c,
+      due_date_c: formData.due_date_c || null,
+      category_id_c: formData.category_id_c || null
     };
 
     onAddTask(newTask);
-    setFormData({
-      title: "",
-      description: "",
-      categoryId: "",
-      priority: "medium",
-      dueDate: ""
+setFormData({
+      title_c: "",
+      description_c: "",
+      category_id_c: "",
+      priority_c: "medium",
+      due_date_c: ""
     });
     
     toast.success("Task added successfully!");
@@ -81,29 +82,30 @@ const QuickAddForm = ({ categories, onAddTask, isExpanded, onToggleExpanded }) =
           <FormField
             label="Task Title"
             required
-            value={formData.title}
-            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+value={formData.title_c}
+            onChange={(e) => setFormData({ ...formData, title_c: e.target.value })}
             onKeyPress={handleKeyPress}
             placeholder="What needs to be done?"
           />
 
           <FormField
             label="Description"
-            value={formData.description}
-            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+value={formData.description_c}
+            onChange={(e) => setFormData({ ...formData, description_c: e.target.value })}
             placeholder="Add more details (optional)"
           />
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <FormField label="Category">
               <Select
-                value={formData.categoryId}
-                onChange={(e) => setFormData({ ...formData, categoryId: e.target.value })}
+value={formData.category_id_c}
+                onChange={(e) => setFormData({ ...formData, category_id_c: e.target.value })}
+                className="flex-1"
               >
-                <option value="">No category</option>
+<option value="">Select category</option>
                 {categories.map(category => (
                   <option key={category.Id} value={category.Id}>
-                    {category.name}
+                    {category.name_c}
                   </option>
                 ))}
               </Select>
@@ -111,8 +113,8 @@ const QuickAddForm = ({ categories, onAddTask, isExpanded, onToggleExpanded }) =
 
             <FormField label="Priority">
               <Select
-                value={formData.priority}
-                onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
+value={formData.priority_c}
+                onChange={(e) => setFormData({ ...formData, priority_c: e.target.value })}
               >
                 <option value="low">Low</option>
                 <option value="medium">Medium</option>
@@ -123,8 +125,8 @@ const QuickAddForm = ({ categories, onAddTask, isExpanded, onToggleExpanded }) =
             <FormField
               label="Due Date"
               type="date"
-              value={formData.dueDate}
-              onChange={(e) => setFormData({ ...formData, dueDate: e.target.value })}
+value={formData.due_date_c}
+              onChange={(e) => setFormData({ ...formData, due_date_c: e.target.value })}
             />
           </div>
 

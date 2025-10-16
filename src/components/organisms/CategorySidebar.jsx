@@ -33,10 +33,10 @@ const CategorySidebar = ({
     e.preventDefault();
     if (!newCategoryName.trim()) return;
 
-    const newCategory = {
-      name: newCategoryName.trim(),
-      color: getRandomColor(),
-      taskCount: 0
+const newCategory = {
+      name_c: newCategoryName.trim(),
+      color_c: getRandomColor(),
+      task_count_c: 0
     };
 
     onAddCategory(newCategory);

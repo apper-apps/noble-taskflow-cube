@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useContext } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { format } from "date-fns";
+import { motion } from "framer-motion";
+import { clearUser } from "@/store/userSlice";
+import { AuthContext } from "@/App";
 import ApperIcon from "@/components/ApperIcon";
 import Button from "@/components/atoms/Button";
+import ProgressRing from "@/components/molecules/ProgressRing";
 
 const Header = ({ totalTasks, completedTasks, onClearCompleted }) => {
-  const today = format(new Date(), "EEEE, MMMM d");
-  const completionRate = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+  const dispatch = useDispatch();
+  const { logout } = useContext(AuthContext);
+  const { user } = useSelector((state) => state.user);
+
+  const today = format(new Date(), 'EEEE, MMMM d, yyyy');
+  const completionRate = totalTasks > 0 
+    ? Math.round((completedTasks / totalTasks) * 100) 
+    : 0;
 
   return (
     <header className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
